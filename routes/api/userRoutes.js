@@ -1,22 +1,18 @@
-const app = require('express').Router();
-const { User } = require('../../models/User');
+const router = require("express").Router();
+const {
+  getUsers,
+  getSingleUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  addFriend,
+  removeFriend,
+} = require("../../controllers/userController");
 
-app.get('/', async (req, res) => {
+router.route("/").get(getUsers).post(createUser);
 
-})
+router.route("/:id").get(getSingleUser).put(updateUser).delete(deleteUser);
 
-app.get('/', async (req, res) => {
+router.route("/:id/friends/:friendId").post(addFriend).delete(removeFriend);
 
-})
-
-app.post('/', async (req, res) => {
-
-})
-
-app.put('/', async (req, res) => {
-
-})
-
-app.delete('/', async (req, res) => {
-
-})
+module.exports = router;
