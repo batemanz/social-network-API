@@ -9,7 +9,7 @@ const userController = {
       .catch((err) => res.status(500).json(err));
   },
   getSingleUser(req, res) {
-    User.findOne({ _id: req.params.userId })
+    User.findOne({ _id: req.params.id })
       .select("-__v")
       .populate("friends")
       .populate("thoughts")
@@ -41,14 +41,14 @@ const userController = {
       .catch((err) => res.status(400).json(err));
   },
   deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.userId })
+    User.findOneAndDelete({ _id: req.params.id })
       .then((dbUsers) => {
         if (!dbUsers) {
           return res.status(404).json({ message: "No such User exists" });
         }
       })
-      .then((course) =>
-        !course
+      .then((dbUsers) =>
+        !dbUsers
           ? res.status(404).json({
               message: "User deleted",
             })
@@ -62,7 +62,7 @@ const userController = {
 
   addFriend(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.userId },
+      { _id: req.params.id },
       { $addToSet: { friends: req.params.friendsId } },
       { new: true }
     )
@@ -80,7 +80,7 @@ const userController = {
 
   removeFriend(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.userId },
+      { _id: req.params.id },
       { $addToSet: { friends: req.params.friendsId } },
       { new: true }
     )
